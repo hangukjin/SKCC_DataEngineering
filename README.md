@@ -11,3 +11,5 @@ ___
 - MongoDB  
 - Sqoop  
 - Flume
+- Kafka
+- Flafka
