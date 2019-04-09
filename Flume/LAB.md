@@ -4,17 +4,17 @@ ___
 
 
 - Source  
-    Type Netcat  
-    Bind localhost  
-    Port 44444  
-<br>
+    - Type : Netcat  
+    - Bind : localhost  
+    - Port : 44444  
+
 - Channel  
-    Type Memory  
-    Capacity 1000  
-    transactionCapacity 100  
-<br>    
+    - Type : Memory  
+    - Capacity : 1000  
+    - transactionCapacity : 100  
+    
 - Sink  
-    Type logger  
+    - Type : logger  
 
 
 ---
