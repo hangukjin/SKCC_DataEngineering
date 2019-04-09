@@ -1,23 +1,22 @@
 ## Lab
-___
+---
 1. Create a new flume configuration file with the following:
 
 
 - Source  
-    Type Netcat  
-    Bind localhost  
-    Port 44444  
-<br>
+    - Type : Netcat  
+    - Bind : localhost  
+    - Port : 44444  
+
 - Channel  
-    Type Memory  
-    Capacity 1000  
-    transactionCapacity 100  
-<br>    
+    - Type : Memory  
+    - Capacity : 1000  
+    - transactionCapacity : 100  
+    
 - Sink  
-    Type logger  
+    - Type : logger  
 
-
----
+___
 
 ### 1.1.  Make Configuration file
 
@@ -31,12 +30,12 @@ agent1.channels = memory-channel
 # Describe/configure the source
 agent1.sources.netcat-source.type = netcat
 agent1.sources.netcat-source.bind = localhost
-agent1.sources.port = 44444
+agent1.sources.netcat-source.port = 44444
 agent1.sources.netcat-source.channels = memory-channel
 
 # Describe the sink
 agent1.sinks.logger-sink.type = logger
-agent1.sinks.hdfs-sink.channel = memory-channel
+agent1.sinks.logger-sink.channel = memory-channel
 
 # Use a channel which buffers events in memory
 agent1.channels.memory-channel.type = memory
