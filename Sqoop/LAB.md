@@ -1,7 +1,7 @@
 ## Lab
 ___
 1. From the <b>accounts table</b>, import only the primary key, along with the first name, last name to HDFS directory /loudacre/accounts/user_info.  
-Please save the file in <u>text format</u> with <u>tab delimiters</u>
+Please save the file in **text format** with **tab delimiters**
 ---
 
 ### 1.1.  테이블 리스트 조회 : list-tables
@@ -160,7 +160,7 @@ lsh
 
 
 ---
-2. This time save the same in <u>parquet format</u> with <u>snappy compression</u>.  
+2. This time save the same in **parquet format** with **snappy compression**.  
 Save it in /loudacre/accounts/user_compressed. Provide a screenshot of HUE with the new directory created.
 ---
 
@@ -263,7 +263,7 @@ Note: Recompile with -Xlint:deprecation for details.
 
 ---
 3. Finally save in /loudacre/accounts/CA only clients whose state is from <b>California</b>.  
-Save the file in <u>avro format</u> and <u>compressed using snappy</u>.  
+Save the file in **avro format** and **compressed using snappy**.  
 From the terminal, display some of the records that you just imported. Take a screenshot and save it as CA_only
 ---
 
