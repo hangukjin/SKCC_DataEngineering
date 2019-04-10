@@ -114,10 +114,9 @@ grunt> QUIT;
 #### Add data to HDFS
 ```console
 $ hdfs dfs -put $ADIR/data/ad_data1.txt /dualcore/
-$ hdfs dfs -ls /dualcore/
+$ hdfs dfs -ls /dualcore/ | grep ad_data1.txt
 
 -rw-rw-rw-   1 training supergroup   31540980 2019-04-09 23:18 /dualcore/ad_data1.txt
-
 ```
 
 #### first_etl.pig
@@ -158,8 +157,94 @@ $ hdfs dfs -cat /dualcore/ad_data1/part* | head -20
 B4	05/01/2013	00:02:45	APPS	bytewiz.example.com	SIDE	0	54
 C4	05/01/2013	00:02:54	DUALCORE	filmport.example.com	SIDE058
 A2	05/01/2013	00:02:58	PICTURES	salestiger.example.com	SIDE072
-
 ```
 
 ### 2.3. Processing Input Data from the Second Ad Network
+
+```console
+$ hdfs dfs -put $ADIR/data/ad_data2.txt /dualcore/
+$ hdfs dfs -ls /dualcore | grep ad_data2.txt
+
+-rw-rw-rw-   1 training supergroup   23769018 2019-04-09 23:43 /dualcore/ad_data2.txt
+```
+
+#### second_etl.pig
+```pig
+data = LOAD '/dualcore/ad_data2.txt'
+       USING PigStorage(',')
+       AS (campaign_id : chararray,
+           date : chararray,
+           time : chararray,
+           display_site : chararray,
+           placement : chararray,
+           was_clicked : int,
+           cpc : int,
+           keyword : chararray);
+
+uniqueData = DISTINCT data;
+
+transformedData = FOREACH uniqueData
+                  GENERATE campaign_id,
+                           REPLACE(date, '-', '/'),
+                           time,
+                           UPPER(TRIM(keyword)),
+                           display_site,
+                           placement,
+                           was_clicked,
+                           cpc;
+
+STORE transformedData INTO '/dualcore/ad_data2'
+USING PigStorage('\t');
+```
+
+#### Run pig file with HDFS file
+```console
+$ hdfs dfs -cat /dualcore/ad_data2/part* | head -20
+A1	05/01/2013	00:22:44	E-BOOK	technews.example.com	SIDE	0	60
+A1	05/01/2013	00:23:35	DEAL	supportwiz.example.com	TOP	0	80
+A1	05/01/2013	00:23:47	TRAVEL	siliconcenter.example.com	TOP	082
+(...skip)
+```
+
+---
+## 3. Analyzing Ad Campaign Data with Pig
+---
+### 3.1. Finding Low-Cost Websites
+
+#### low_cost_sites.pig
+```pig
+data = LOAD 'test_ad_data.txt'
+       AS (campaign_id : chararray,
+           date : chararray,
+           time : chararray,
+           keyword : chararray,
+           display_site : chararray,
+           placement : chararray,
+           was_clicked : int,
+           cpc : int);
+
+clickOnce = FILTER data BY was_clicked == 1;
+
+groupedByDS = GROUP clickOnce BY display_site;
+
+aggregateData = FOREACH groupedByDS
+                GENERATE group AS display_site,
+                         SUM(clickOnce.was_clicked) AS clickSum;
+
+orderedData = ORDER aggregateData BY clickSum ASC;
+
+topThree = LIMIT orderedData 3;
+
+DUMP topThree;
+```
+
+#### Run Pig file
+```console
+$ pig -x local low_cost_sites.pig
+
+(megawave.example.com,1)
+(megasource.example.com,1)
+(diskcentral.example.com,1)
+```
+
 
