@@ -248,3 +248,41 @@ $ pig -x local low_cost_sites.pig
 ```
 
 
+### 3.2. Finding High-Cost Keywords
+
+#### high_cost_sites.pig
+```pig
+data = LOAD 'test_ad_data.txt'
+       AS (campaign_id : chararray,
+           date : chararray,
+           time : chararray,
+           keyword : chararray,
+           display_site : chararray,
+           placement : chararray,
+           was_clicked : int,
+           cpc : int);
+
+groupedByDS = GROUP data BY display_site;
+
+aggregateData = FOREACH groupedByDS
+                GENERATE group AS display_site,
+                         SUM(data.was_clicked) AS clickSum;
+
+
+orderedData = ORDER aggregateData BY clickSum DESC;
+
+topFive = LIMIT orderedData 5;
+
+DUMP topFive;
+```
+
+#### Run Pig file
+```console
+$ pig -x local high_cost_sites.pig
+
+(salestiger.example.com,2)
+(megasource.example.com,1)
+(megawave.example.com,1)
+(diskcentral.example.com,1)
+(betamaxholdouts.example.com,0)
+```
