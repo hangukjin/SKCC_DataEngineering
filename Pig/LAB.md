@@ -1,8 +1,6 @@
 # LAB
 
----
 ## 1. Data ingest with Hadoop Tools
----
 
 ### 1.1. Importing Database Tables into HDFS with Sqoop
 
@@ -74,9 +72,7 @@ $ sqoop import \
 
 
 
----
 ## 2. Using Pig for ETL Processing
----
 
 ### 2.1. Working in the Grunt Shell
 
@@ -206,9 +202,9 @@ A1	05/01/2013	00:23:47	TRAVEL	siliconcenter.example.com	TOP	082
 (...skip)
 ```
 
----
+
 ## 3. Analyzing Ad Campaign Data with Pig
----
+
 ### 3.1. Finding Low-Cost Websites
 
 #### low_cost_sites.pig
