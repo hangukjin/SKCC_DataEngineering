@@ -1,4 +1,6 @@
 ## Step 0. Preparation
+[ Setting SSHD ]
+
 [ Get root user ]
 ```
 sudo -i
@@ -35,6 +37,16 @@ sudo vi /etc/hosts
 ```
 sudo systemctl disable firewalld
 sudo systemctl status firewalld
+```
+
+[ Disable SELinux ]
+```
+sudo vi /etc/selinux/config
+```
+***Change***  
+>SELINUX=disabled
+```
+sudo setenforce 0
 ```
 
 [ Disable Transparent hugepage ]
@@ -226,7 +238,7 @@ sudo tail -f /var/log/cloudera-scm-server/cloudera-scm-server.log
 ## Sqoop Version = 1
 
 ## Kafka Install
-[ Kafka Parcel ]  
+[ Kafka 3.1.0 Parcel ]  
 호스트 -> Parcel -> 구성 -> 원격 Parcel 레포지터리  
 >http://archive.cloudera.com/kafka/parcels/3.1.0/
 
